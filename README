@@ -1,0 +1,31 @@
+#########
+need prepare qc_vcf_tped:
+02qc_vcf.py
+03vcf_to_tped.sh
+
+#########
+inputs:
+
+pop=[PJL]
+software=[hapbin, selscan]
+alt_na=[alt, na]
+aaref=[arg, jv, phv]
+rmap=[pyrho, jv, phv, tian]
+maf=[01, 05]
+chr=1:22, optional, default is all
+
+final outputs:
+/home/tx56/palmer_scratch/100kga/ihs_auto/{pop}.{software}.{alt_na}.{aaref}.{rmap}.{maf}.gz
+
+by starting the script, will call these tasks one after another, and pass option from the main script:
+
+0.run_pipline
+1.match_aa {pop} {aaref}: save {pop}.{aaref}.tped to /home/tx56/palmer_scratch/100kga/ihs_auto/aa_tped
+2.add_rmap {pop} {rmap}: save {pop}.{aaref}.{rmap}.tped,{pop}.{aaref}.{rmap}.hap,{pop}.{aaref}.{rmap}.map to /home/tx56/palmer_scratch/100kga/ihs_auto/qced_input_maphap
+3.run_ihs_calc {pop} {sofware} {alt_na} {maf}: save {pop}.{software}.{alt_na}.{aaref}.{rmap}.{maf}.ihs.out to /home/tx56/palmer_scratch/100kga/ihs_auto/ihs
+4.normalize_ihs {pop} {sofware} {maf}: save output to /home/tx56/palmer_scratch/100kga/ihs_auto/{pop}.{software}.{alt_na}.{aaref}.{rmap}.{maf}.gz
+####################
+e.g.
+python run_pipeline.py --pop PJL --aaref arg --rmap pyrho --software hapbin --alt_na na --maf 05 --chr 22
+
+
