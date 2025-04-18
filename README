@@ -1,5 +1,5 @@
 #########
-need prepare qc_vcf_tped:
+need to prepare vcf then qc to tped:
 02qc_vcf.py
 03vcf_to_tped.sh
 
